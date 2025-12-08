@@ -1,16 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { deleteRestaurant } from '../../actions/restaurantActions';
 import TagContainer from '../../containers/TagContainer';
 import { Card, CardBody, CardTitle, CardHeader, Button } from 'reactstrap';
 
 const Restaurant = props => {
-  const { restaurant } = props.location.state;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const restaurant = location.state?.restaurant;
+
+  if (!restaurant) {
+    return <div>Restaurant not found</div>;
+  }
 
   const handleClick = () => {
     props.deleteRestaurant(restaurant.id);
-    const path = `/restaurants`;
-    props.history.push(path);
+    navigate('/restaurants');
   };
 
   return (
